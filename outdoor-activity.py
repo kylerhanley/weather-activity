@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request, redirect
-import json
+import json, requests
 app = Flask(__name__)
 
 @app.route("/", methods =["GET","POST"])
