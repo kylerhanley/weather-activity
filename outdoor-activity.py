@@ -1,9 +1,10 @@
-
 from flask import Flask, render_template, request, redirect
-import json, requests
+import requests
+
 app = Flask(__name__)
 
-@app.route("/", methods =["GET","POST"])
+
+@app.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
         user_city = request.form.get("city")
@@ -17,11 +18,13 @@ def home():
         response = requests.get(url)
         if response.status_code == 200:
             weather_data = response.json()
-            results = get_weather_measurements(weather_data)
-            return results
+            results, main, temperature, wind_speed = get_weather_measurements(weather_data)
+            return render_template("results.html", activities=results, main=main, temperature=temperature,
+                                   wind_speed=wind_speed)
         else:
             return "The location entered is invalid, try again"
-    return render_template("index.html")
+    return render_template("home.html")
+
 
 def get_weather_measurements(weather_data):
     # getting the values of main, temperature, wind
@@ -34,20 +37,68 @@ def get_weather_measurements(weather_data):
     wind_speed = wind.get("speed")
     conditions = get_weather_conditions(main, temperature, wind_speed)
     if conditions == "thunderstorms":
-        results = is_thunderstorms
+        results = is_thunderstorms()
     elif conditions == "raining":
-        results = is_raining
+        results = is_raining()
     elif conditions == "snowing":
-        results = is_snowing
-    return results
+        results = is_snowing()
+    elif conditions == "misty":
+        results = is_misting()
+    elif conditions == "foggy":
+        results = is_foggy()
+    elif conditions == "tornado":
+        results = is_tornado()
+    elif conditions == "hurricane":
+        results = is_hurricane()
+    elif conditions == "windy":
+        results = is_windy()
+    elif conditions == "clear and hot" or conditions == "cloudy and hot":
+        results = is_hot()
+    elif conditions == "clear and mild" or conditions == "cloudy and mild":
+        results = is_mild()
+    elif conditions == "clear and cold" or conditions == "cloudy and cold":
+        results = is_cold()
 
-def get_weather_conditions(main,temperature,wind_speed):
+    return results, main, temperature, wind_speed
+
+
+def get_weather_conditions(main, temperature, wind_speed):
     if main == "Thunderstorm":
         return "thunderstorms"
     if main == "Rain" or main == "Drizzle":
         return "raining"
     if main == "Snow":
         return "snowing"
+    if main == "Mist":
+        return "misty"
+    if main == "Fog":
+        return "foggy"
+    if main == "Tornado":
+        return "tornado"
+    if main == "Hurricane":
+        return "hurricane"
+    if main == "hazy":
+        return "foggy"
+    if main == "Clear":
+        if wind_speed > 20.0:
+            return "windy"
+        if temperature >= 85:
+            return "clear and hot"
+        if 55 <= temperature <= 80:
+            return "clear and mild"
+        if 32 <= temperature <= 54:
+            return "clear and cold"
+    if main == "Clouds":
+        if wind_speed > 15.0:
+            return "windy"
+        if temperature >= 80:
+            return "cloudy and hot"
+        if 55 <= temperature <= 80:
+            return "cloudy and mild"
+        if 32 <= temperature <= 54:
+            return "cloudy and cold"
+
+
 def is_thunderstorms():
     results = [
         "indoor climbing",
@@ -66,6 +117,7 @@ def is_thunderstorms():
         "trampoline park",
     ]
     return results
+
 
 def is_raining():
     results = [
@@ -90,8 +142,9 @@ def is_raining():
 
     return results
 
+
 def is_snowing():
-    results = snow_sports = [
+    results = [
         "Skiing",
         "Snowboarding",
         "Cross-Country Skiing",
@@ -124,10 +177,170 @@ def is_snowing():
     return results
 
 
+def is_misting():
+    results = [
+        "Nature Walk",
+        "Photography",
+        "Bird Watching",
+        "Hiking",
+        "Botanical Garden Visit",
+        "Fishing",
+        "Paddle Boating",
+        "Outdoor Yoga",
+        "Stargazing",
+        "Geocaching"
+
+    ]
+    return results
 
 
+def is_foggy():
+    results = [
+        "Morning Jog",
+        "Golf ",
+        "Tennis ",
+        "Disc Golf ",
+        "Soccer",
+        "Basketball ",
+        "Beach Volleyball ",
+        "Skateboarding ",
+        "Mountain Biking ",
+        "Trail Running",
+        "Paddleboarding ",
+        "Kayaking ",
+        "Fishing ",
+        "Horseback Riding",
+        "Archery ",
+        "Frisbee ",
+        "Softball ",
+        "Baseball",
+        "Rugby",
+        "Lacrosse"
+    ]
+    return results
 
+
+def is_tornado():
+    results = ["There is a tornado! Take cover!"]
+    return results
+
+
+def is_hurricane():
+    results = ["There is a hurricane! Stay inside and stay away from windows"]
+    return results
+
+
+def is_windy():
+    results = [
+        "Kite Flying",
+        "Windsurfing",
+        "Sailing",
+        "Paragliding",
+        "Hang Gliding",
+        "Kiteboarding",
+    ]
+    return results
+
+
+def is_hot():
+    results = [
+        "Swimming",
+        "Water Polo",
+        "Surfing",
+        "Kayaking",
+        "Paddleboarding",
+        "Water Skiing",
+        "Tubing",
+        "Jet Skiing",
+        "Sailing",
+        "Canoeing",
+        "Diving",
+        "Snorkeling",
+        "Wakeboarding",
+        "Outdoor Water Park",
+        "Rowing",
+    ]
+    return results
+
+
+def is_mild():
+    results = [
+        "Soccer",
+        "Basketball",
+        "Baseball",
+        "Softball",
+        "Tennis",
+        "Golf",
+        "Cycling",
+        "Hiking",
+        "Running",
+        "Beach Volleyball",
+        "Skateboarding",
+        "Inline Skating",
+        "Ultimate Frisbee",
+        "Frisbee Golf",
+        "Badminton",
+        "Croquet",
+        "Disc Golf",
+        "Gymnastics (outdoor)",
+        "Parkour",
+        "Rock Climbing",
+        "Mountain Biking",
+        "Trail Running",
+        "Archery",
+        "Horseback Riding",
+        "Kite Flying",
+        "Paddleboarding",
+        "Kiteboarding",
+        "Canoeing",
+        "Kayaking",
+        "Paddle Tennis",
+        "Outdoor Yoga",
+        "Picnicking",
+        "Bird Watching",
+        "Photography",
+        "Outdoor Tai Chi",
+        "Geocaching",
+        "Sightseeing",
+        "Flag Football",
+        "Ultimate Frisbee",
+        "Rugby",
+        "Lacrosse",
+        "Field Hockey",
+        "Volleyball",
+        "Handball",
+        "Cricket",
+        "Soccer Tennis",
+    ]
+    return results
+
+
+def is_cold():
+    results = [
+        "Ice Hockey",
+        "Ice Fishing",
+        "Curling",
+        "Indoor Rock Climbing",
+        "Indoor Swimming",
+        "Indoor Tennis",
+        "Indoor Basketball",
+        "Indoor Volleyball",
+        "Indoor Soccer",
+        "Indoor Trampoline Park",
+        "Indoor Bowling",
+        "Indoor Mini Golf",
+        "Board Games",
+        "Cooking and Baking",
+        "Reading",
+        "Museum Visits",
+        "Yoga",
+        "Gym Workouts",
+        "Indoor Cycling",
+        "Pilates (indoor)",
+        "Dance Classes",
+    ]
+    return results
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug=True)

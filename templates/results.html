@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Results Page</title>
+</head>
+<body>
+    <h1>Since the main conditions is/are {{main}}, the temperature is {{temperature}} degrees and the wind is {{wind_speed}}mph
+        your activity suggestions are:
+    </h1>
+    <table>
+    <thead>
+        <tr>
+            <th>Activity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for activity in activities %}
+        <tr>
+            <td>{{ activity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href={{url_for("home")}}>Back to Home</a>
+</html>
