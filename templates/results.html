@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="static/styles.css" rel="stylesheet" />
     <title>Results Page</title>
 </head>
-<body>
+<body id= "result">
     <h1>Since the main conditions is/are {{main}}, the temperature is {{temperature}} degrees and the wind is {{wind_speed}}mph
         your activity suggestions are:
     </h1>
@@ -23,5 +24,5 @@
         {% endfor %}
     </tbody>
 </table>
-<a href={{url_for("home")}}>Back to Home</a>
+<a id="back" href={{url_for("home")}}>Back to Home</a>
 </html>

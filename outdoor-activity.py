@@ -13,9 +13,12 @@ def home():
         api_key = "b4d8a2a529e1c2b76c50d4c6291284ef"
         url = f'https://api.openweathermap.org/data/2.5/weather?q={user_city},{user_state},{user_country}&appid={api_key}&units=imperial'
         print(user_city, user_state)
+        # if user has not entered input
         if user_city is None or user_state is None:
             return "Please enter city and state"
+        # API call with user input data
         response = requests.get(url)
+        # API call successful
         if response.status_code == 200:
             weather_data = response.json()
             results, main, temperature, wind_speed = get_weather_measurements(weather_data)
