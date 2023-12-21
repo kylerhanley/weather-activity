@@ -1,2 +1,2 @@
 # weather-activity
-An application that suggests to the user an activity tailored to the weather in their current location
+This Flask application takes a user's location and suggests activities to them based on the weather in their current area (which is obtained using OpenWeather API). 
