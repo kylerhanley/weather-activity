@@ -5,6 +5,8 @@ This Flask application takes a user's location and suggests activities to them b
 ### Home page: 
 ![Screenshot 2024-01-04 090351](https://github.com/kylerhanley/weather-activity/assets/122304552/a4cf99e2-2004-4528-8c88-1d7db5b26fe1)
 
+### Results Page: 
+![Screenshot 2024-01-04 192707](https://github.com/kylerhanley/weather-activity/assets/122304552/67cd2b77-59f8-4899-881b-196757ea370b)
 
 # How It's Made: 
 Technology Used: Python, Flask, HTML, CSS
